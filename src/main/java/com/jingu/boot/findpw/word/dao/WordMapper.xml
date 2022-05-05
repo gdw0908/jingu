@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jingu.boot.findpw.word.dao.WordDao">
+
+	<select id="select_payment" parameterType="Map" resultType="convertMap">
+		SELECT
+			PAYMENT_SEQ, COMPANY_NM, MID, TRX_TYPE, PG_SEQ, PG_NM, PG_BANK_NM, STATE,
+				(SELECT CODE_NM FROM COMMON_CODE COM WHERE COM.CODE_GROUP_SEQ = 26 AND COM.CODE = A.V_BANK_CD)  AS V_BANK_NM,
+				(SELECT CODE_NM FROM COMMON_CODE COM WHERE COM.CODE_GROUP_SEQ = 26 AND COM.CODE = A.W_BANK_CD)  AS W_BANK_NM,
+				V_BANK_CD, V_ACC_NO, W_BANK_CD, W_ACC_NO, W_ACC_NM, BIRTH_DT, MOBILE, AMT, EXP_AMT, CALC_AMT,
+				CAST(DATE_FORMAT(APP_DT, '%Y-%m-%d %H:%i:%s') AS CHAR) AS APP_DT, 
+				CAST(DATE_FORMAT(EXP_DT, '%Y-%m-%d %H:%i:%s') AS CHAR) AS EXP_DT, 
+				CAST(DATE_FORMAT(COM_DT, '%Y-%m-%d %H:%i:%s') AS CHAR) AS COM_DT,
+				SENDER, MOID, TOP_ORDERID, TID, P_TID, PG_PER, PG_PAY_YN, CUSTOMER_PER, CUSTOMER_CYCLE, CUSTOMER_PAY_DT, CUSTOMER_PAY_YN, 
+				<choose>
+				<when test="conn_mode eq 'su'.toString()">
+				JI_AID, REVENUE, COST, 
+				CH_AID, CH_PER, CH_TAX,
+				AG_AID, AG_PER, AG_TAX,
+				</when>
+				<when test="conn_mode eq 'ji'.toString()">
+				REVENUE, COST, 
+				CH_AID, CH_PER, CH_TAX,
+				AG_AID, AG_PER, AG_TAX,
+				</when>
+				<when test="conn_mode eq 'ch'.toString()">
+				CH_AID, CH_PER, CH_TAX,
+				</when>
+				<when test="conn_mode eq 'ag'.toString()">
+				AG_AID, AG_PER, AG_TAX,
+				</when>
+				</choose>
+				REMARK, DEPOSIT_FEE, IFNULL(DAY_CALC_SEQ, '미정산') AS DAY_CALC_SEQ, 
+				CAST(DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS CHAR) AS REG_DT, 
+				MOD_ID, CAST(DATE_FORMAT(MOD_DT, '%Y-%m-%d %H:%i:%s') AS CHAR) AS MOD_DT
+		FROM PAYMENT A
+		<where>
+	        <if test="!(mid == null or mid == '')" >
+			AND A.MID = #{mid} 
+	        </if>
+	        <if test="!(ji_aid == null or ji_aid == '')" >
+			AND A.JI_AID = #{ji_aid} 
+	        </if>
+	        <if test="!(ch_aid == null or ch_aid == '')" >
+			AND A.CH_AID = #{ch_aid} 
+	        </if>
+	        <if test="!(ag_aid == null or ag_aid == '')" >
+			AND ( A.AG_AID = #{ag_aid} OR A.AG_AID2 = #{ag_aid} OR A.AG_AID3 = #{ag_aid} ) 
+	        </if>
+        	<if test="!(payment_seq == null or payment_seq == '')" >
+			AND PAYMENT_SEQ = #{payment_seq}
+        	</if>
+        	<if test="!(tid == null or tid == '')" >
+			AND TID = #{tid}
+        	</if>
+        	<if test="!(moid == null or moid == '')" >
+			AND MOID = #{moid}
+        	</if>
+        </where>
+	</select>
+</mapper>

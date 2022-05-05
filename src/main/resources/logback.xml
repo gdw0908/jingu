@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d %5p | %-55logger{55} | %m %n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="rolling" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <Append>true</Append>
+        <File>/Users/gdw/workspace/logs/jingu/jingu.log</File>
+        <encoder>
+            <pattern>%d %5p | %-55logger{55} | %m %n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/Users/gdw/workspace/logs/jingu/jingu-%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <root level="debug">
+        <appender-ref ref="console"/>
+        <appender-ref ref="rolling"/>
+    </root>
+
+    <logger name="com.jingu.boot.findpw" additivity="false" level="debug">
+        <appender-ref ref="console"/>
+        <appender-ref ref="rolling"/>
+    </logger>
+
+    <logger name="org.springframework" additivity="false" level="error">
+        <appender-ref ref="console"/>
+        <appender-ref ref="rolling"/>
+    </logger>
+
+    <logger name="org.springframework.web" additivity="false" level="error">
+        <appender-ref ref="console"/>
+        <appender-ref ref="rolling"/>
+    </logger>
+
+    <logger name="org.springframework.data" additivity="false" level="error">
+        <appender-ref ref="console"/>
+        <appender-ref ref="rolling"/>
+    </logger>
+
+	<logger name="java.sql" additivity="false" level="error">
+        <appender-ref ref="console"/>
+        <appender-ref ref="rolling"/>
+    </logger>
+
+    <!-- Connection -->
+    <logger name="jdbc.connection" additivity="false" level="error">
+        <appender-ref ref="console"/>
+        <appender-ref ref="rolling"/>
+    </logger>
+
+    <!-- SQL Only -->
+    <logger name="jdbc.sqlonly" additivity="false" level="error">
+        <appender-ref ref="console"/>
+        <appender-ref ref="rolling"/>
+    </logger>
+
+    <!-- SQL + Excuted time. Recommended on error level. -->
+    <logger name="jdbc.sqltiming" additivity="false" level="error">
+        <appender-ref ref="console"/>
+        <appender-ref ref="rolling"/>
+    </logger>
+
+    <!-- Result set -->
+    <logger name="jdbc.resultset" additivity="false" level="error">
+        <appender-ref ref="console"/>
+        <appender-ref ref="rolling"/>
+    </logger>
+
+    <!-- Result as a table. Recommended on error level. -->
+    <logger name="jdbc.resultsettable" additivity="false" level="error">
+        <appender-ref ref="console"/>
+        <appender-ref ref="rolling"/>
+    </logger>
+
+    <!-- Logs all JDBC Call. normally not use this. -->
+    <logger name="jdbc.audit" additivity="false" level="error">
+        <appender-ref ref="console"/>
+        <appender-ref ref="rolling"/>
+    </logger>
+
+</configuration>

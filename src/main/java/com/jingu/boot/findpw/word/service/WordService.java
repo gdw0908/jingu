@@ -16,7 +16,11 @@ public class WordService {
 	@Autowired
 	private WordDao wordDao;
 	
-	public Map<String, Object> select_payment(Map<String, Object> param) {
-		return wordDao.select_payment(param);
+	public Map<String, Object> select_word_list(Map<String, Object> param) {
+		return wordDao.select_word_list(param);
+	}
+	
+	public int insert_word(Map<String, Object> param) {
+		return wordDao.insert_word(param);
 	}
 }

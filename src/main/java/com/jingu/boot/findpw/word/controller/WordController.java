@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import com.jingu.boot.findpw.common.StringUtil;
 
 import com.jingu.boot.findpw.word.service.WordService;
 
@@ -62,78 +63,29 @@ public class WordController {
 		
 		//Map<String, Object> wordInfo =wordService.select_word_list(reqMap);
 		
-        /*int n = 12;
-        String[] arr = {(String)reqMap.get("word1"), (String)reqMap.get("word2"), (String)reqMap.get("word3"), (String)reqMap.get("word4"),
-        		(String)reqMap.get("word5"),(String)reqMap.get("word6"),(String)reqMap.get("word7"),
-        		(String)reqMap.get("word8"),(String)reqMap.get("word9"),(String)reqMap.get("word10"),
-        		(String)reqMap.get("word11"),(String)reqMap.get("word12")};
-        boolean[] visited = new boolean[n];
-
-        for (int i = 1; i <= n; i++) {
-        	//if(i == 12) {
-            System.out.println("\n" + n + " 개 중에서 " + i + " 개 뽑기");
-            combination(arr, visited, 0, n, i);
-        	//}
-        }*/
-
-        ArrayList<Integer> inputList = new ArrayList<Integer>();
-        inputList.add(Integer.parseInt((String)reqMap.get("word1")));
-        inputList.add(Integer.parseInt((String)reqMap.get("word2")));
-        inputList.add(Integer.parseInt((String)reqMap.get("word3")));
-        /*inputList.add(Integer.parseInt((String)reqMap.get("word4")));
-        inputList.add(Integer.parseInt((String)reqMap.get("word5")));
-        inputList.add(Integer.parseInt((String)reqMap.get("word6")));
-        inputList.add(Integer.parseInt((String)reqMap.get("word7")));
-        inputList.add(Integer.parseInt((String)reqMap.get("word8")));
-        inputList.add(Integer.parseInt((String)reqMap.get("word9")));
-        inputList.add(Integer.parseInt((String)reqMap.get("word10")));
-        inputList.add(Integer.parseInt((String)reqMap.get("word11")));
-        inputList.add(Integer.parseInt((String)reqMap.get("word12")));*/
-
-        ArrayList<ArrayList<Integer>> resultList = new ArrayList<ArrayList<Integer>>();
-		getPermutationCore(resultList, inputList);
-		log.debug("여기까지 왓니???"+resultList.toString()+" 결과 갯수 : "+resultList.size());
-		
-        ArrayList<String> inputList2 = new ArrayList<String>();
-        inputList2.add((String)reqMap.get("word1"));
-        inputList2.add((String)reqMap.get("word2"));
-        inputList2.add((String)reqMap.get("word3"));
-        ArrayList<ArrayList<String>> resultList2 = new ArrayList<ArrayList<String>>();
-		getPermutationCore2(resultList2, inputList2);
-		log.debug("여기까지 왓니???"+resultList2.toString()+" 결과 갯수 : "+resultList2.size());
-		
-		
+        ArrayList<String> inputList = new ArrayList<String>();
+        if(!StringUtil.isBlank((String)reqMap.get("word1"))) inputList.add((String)reqMap.get("word1"));
+        if(!StringUtil.isBlank((String)reqMap.get("word2"))) inputList.add((String)reqMap.get("word2"));
+        if(!StringUtil.isBlank((String)reqMap.get("word3"))) inputList.add((String)reqMap.get("word3"));
+        if(!StringUtil.isBlank((String)reqMap.get("word4"))) inputList.add((String)reqMap.get("word4"));
+        if(!StringUtil.isBlank((String)reqMap.get("word5"))) inputList.add((String)reqMap.get("word5"));
+        if(!StringUtil.isBlank((String)reqMap.get("word6"))) inputList.add((String)reqMap.get("word6"));
+        if(!StringUtil.isBlank((String)reqMap.get("word7"))) inputList.add((String)reqMap.get("word7"));
+        if(!StringUtil.isBlank((String)reqMap.get("word8"))) inputList.add((String)reqMap.get("word8"));
+        if(!StringUtil.isBlank((String)reqMap.get("word9"))) inputList.add((String)reqMap.get("word9"));
+        if(!StringUtil.isBlank((String)reqMap.get("word10"))) inputList.add((String)reqMap.get("word10"));
+        
+        ArrayList<ArrayList<String>> resultList = new ArrayList<ArrayList<String>>();
+        getPermutationCore(resultList, inputList);
+		log.debug(" ===== 결과 ===== ");
+		log.debug("경우의 수 : "+resultList.toString()+" 결과 갯수 : "+resultList.size());
+		//log.debug("경우의 수 10건 결과 갯수 : "+resultList.size());
 		
 		mav.setViewName("/jingu/findPw");
 		//return mav;
 	}
 	
-	// 백트래킹 사용
-    // 사용 예시 : combination(arr, visited, 0, n, r)
-    static void combination(String[] arr, boolean[] visited, int start, int n, int r) {
-        if (r == 0) {
-            print(arr, visited, n);
-            return;
-        }
-
-        for (int i = start; i < n; i++) {
-            visited[i] = true;
-            combination(arr, visited, i + 1, n, r - 1);
-            visited[i] = false;
-        }
-    }
-
-    // 배열 출력
-    static void print(String[] arr, boolean[] visited, int n) {
-        for (int i = 0; i < n; i++) {
-            if (visited[i]) {
-                System.out.print(arr[i] + " ");
-            }
-        }
-        System.out.println();
-    }
-    
-    private void getPermutationCore(ArrayList<ArrayList<Integer>> resultList, ArrayList<Integer> inputList) {
+    private void getPermutationCore(ArrayList<ArrayList<String>> resultList, ArrayList<String> inputList) {
         
         // 인덱스리스트 구하기
         ArrayList<ArrayList<Integer>> suffledIndexList = getSuffledIndexList(inputList.size());
@@ -143,7 +95,7 @@ public class WordController {
        
         int count = suffledIndexList.size();
         for (int i=0; i<count; i++) {
-            ArrayList<Integer> oneResult = new ArrayList<Integer>();
+            ArrayList<String> oneResult = new ArrayList<String>();
            
             ArrayList<Integer> indexList = suffledIndexList.get(i);
             for (int j=0; j<indexList.size(); j++) {
@@ -192,72 +144,33 @@ public class WordController {
             }
         }
     }
-
-    	private void getPermutationCore2(ArrayList<ArrayList<String>> resultList, ArrayList<String> inputList) {
-        
-        // 인덱스리스트 구하기
-        //ArrayList<ArrayList<String>> suffledIndexList = getSuffledIndexList(inputList.size());
-        ArrayList<ArrayList<String>> suffledIndexList = getSuffledIndexList(inputList);
-        if (suffledIndexList == null || suffledIndexList.size() == 0) {
+    
+	// 백트래킹 사용
+    // 사용 예시 : combination(arr, visited, 0, n, r)
+    static void combination(String[] arr, boolean[] visited, int start, int n, int r) {
+        if (r == 0) {
+            print(arr, visited, n);
             return;
         }
-       
-        int count = suffledIndexList.size();
-        for (int i=0; i<count; i++) {
-            ArrayList<String> oneResult = new ArrayList<String>();
-           
-            ArrayList<String> indexList = suffledIndexList.get(i);
-            for (int j=0; j<indexList.size(); j++) {
-            		for (int k=0; k<inputList.size(); k++) {
-            			if(inputList.get(j).equals(indexList.get(k))){
-                			oneResult.add(inputList.get(j));
-                			break;
-                		}	
-            		}
-            }
-           
-            resultList.add(oneResult);
+
+        for (int i = start; i < n; i++) {
+            visited[i] = true;
+            combination(arr, visited, i + 1, n, r - 1);
+            visited[i] = false;
         }
+    }
+
+    // 배열 출력
+    static void print(String[] arr, boolean[] visited, int n) {
+        for (int i = 0; i < n; i++) {
+            if (visited[i]) {
+                System.out.print(arr[i] + " ");
+            }
+        }
+        System.out.println();
     }
     
-    private ArrayList<ArrayList<String>> getSuffledIndexList(ArrayList<String> inputList) {
-        ArrayList<ArrayList<String>> suffledIndexList = new ArrayList<ArrayList<String>>();
-        shuffleRecursively(suffledIndexList, null, inputList, null);
-        return suffledIndexList;
-    }
     
-    private void shuffleRecursively(ArrayList<ArrayList<String>> resultList, ArrayList<String> inputResult, ArrayList<String> inputList, ArrayList<String> exceptList) {
-        if (exceptList == null) {
-            exceptList = new ArrayList<String>();
-        }
-       
-        for (int i=0; i<inputList.size(); i++) {
-            if (exceptList.contains(i)) {
-                continue;
-            }
-           
-            ArrayList<String> oneResult = null;
-            if (exceptList.size() == 0) {
-                oneResult = new ArrayList<String>();
-            } else {
-                oneResult = (ArrayList<String>) inputResult.clone();
-            }
-           
-            if (oneResult.size() < inputList.size()) {
-                oneResult.add(inputList.get(i));
-               
-                if (oneResult.size() == inputList.size()) {
-                    resultList.add(oneResult);
-                   
-                } else if (oneResult.size() < inputList.size()) {
-                    ArrayList<String> newExceptList = (ArrayList<String>) exceptList.clone();
-                    newExceptList.add(inputList.get(i));
-                   
-                    shuffleRecursively(resultList, oneResult, inputList, newExceptList);
-                }
-            }
-        }
-    }
     
     
 	
